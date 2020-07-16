@@ -1,0 +1,16 @@
+<a href="/"><button class="btn btn-success ">Sair</button></a>
+<a href="/add/carros"><button class="btn btn-primary ">+ cadastro</button></a>
+
+{{#each carros}}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4>Nome do carro: {{nome}}</h4>
+            <h4>Ano: {{ano}}</h4>
+            <h4>Preço: R${{preco}}</h4>
+            <h4>Descrição: {{descricao}}</h4>
+            <h4>Data da postagem: {{data}}</h4>
+            <a href="/editar/carros/{{_id}}"><button class="btn btn-warning mt-4">Editar postagem</button></a>
+        </div>
+    </div>
+{{else}}
+{{/each}}
