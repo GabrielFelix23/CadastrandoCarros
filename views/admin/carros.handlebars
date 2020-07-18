@@ -1,5 +1,6 @@
 <a href="/"><button class="btn btn-success ">Sair</button></a>
-<a href="/add/carros"><button class="btn btn-primary ">+ cadastro</button></a>
+<a href="/add/carros"><button class="btn btn-primary ">Cadastrar +</button></a>
+<a href="/postagem"><button class="btn btn-dark">Postagem</button></a>
 
 {{#each carros}}
     <div class="card mt-4">
@@ -10,13 +11,16 @@
             <h4>Descrição: {{descricao}}</h4>
             <h4>Data da postagem: {{data}}</h4>
             
-            <a href="/editar/carros/{{_id}}"><button class="btn btn-warning mt-4">Editar postagem</button></a>
-            
+            <a href="/editar/carros/{{_id}}">
+                <button class="btn btn-warning mt-4">Editar postagem</button>
+            </a>
             <form action="/deletar/carros" method="POST">
                 <input type="hidden" name="id" value="{{_id}}">
-                <button class="btn btn-danger mt-4">Deletar</button>
+                <button class="btn btn-danger mt-2">Deletar</button>
             </form>
+
         </div>
     </div>
 {{else}}
+    <h3 class="mt-4">Nunhum carro cadastrado!</h3>
 {{/each}}

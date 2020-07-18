@@ -8,9 +8,14 @@ router.get("/", (req, res) => {
     res.render("admin/index")
 })
 
-//Botão Add Carros
-router.get("/add/carros", (req, res) => {
-    res.render("admin/addcarros")
+//Botão Ver Carros
+router.get("/carros", (req, res) => {
+    CadastroCar.find().lean().sort({data: 'desc'}).then((carros) => {
+        res.render("admin/carros", {carros:carros})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao listar o carro!")
+        res.redirect("/carros")
+    })
 })
 
 router.post("/novo/carro", (req, res) => {
@@ -53,12 +58,17 @@ router.post("/novo/carro", (req, res) => {
     }
 })
 
-//Botão Ver Carros
-router.get("/carros", (req, res) => {
-    CadastroCar.find().lean().sort({data: 'desc'}).then((carros) => {
-        res.render("admin/carros", {carros:carros})
-    }).catch((erro) => {
-        req.flash("error_msg", "Houve um erro ao listar o carro!")
+//Cadastrar +
+router.get("/add/carros", (req, res) => {
+    res.render("admin/addcarros")
+})
+
+//Postagem
+router.get("/postagem", (req, res) => {
+    CadastroCar.find().lean().then((postagens) => {
+        res.render("admin/postagem", {postagens:postagens})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao entrar na página da postagem!")
         res.redirect("/carros")
     })
 })
@@ -67,7 +77,7 @@ router.get("/carros", (req, res) => {
 router.get("/editar/carros/:id", (req, res) => {
     CadastroCar.findOne({_id: req.params.id}).lean().then((carroEditar) => {
         res.render("admin/editarcarros", {carroEditar:carroEditar})
-    }).catch((erro) => {
+    }).catch((err) => {
         req.flash("error_msg", "Houve um erro ao editar. Tente novamente!")
         res.redirect("/carros")
     })
