@@ -18,6 +18,10 @@ router.get("/carros", (req, res) => {
     })
 })
 
+//Cadastrar +
+router.get("/add/carros", (req, res) => {
+    res.render("admin/addcarros")
+})
 router.post("/novo/carro", (req, res) => {
     var erros = []
     if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
@@ -56,11 +60,6 @@ router.post("/novo/carro", (req, res) => {
             res.redirect("/add/carros")
         })
     }
-})
-
-//Cadastrar +
-router.get("/add/carros", (req, res) => {
-    res.render("admin/addcarros")
 })
 
 //Postagem
