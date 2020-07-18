@@ -9,7 +9,13 @@
             <h4>Preço: R${{preco}}</h4>
             <h4>Descrição: {{descricao}}</h4>
             <h4>Data da postagem: {{data}}</h4>
+            
             <a href="/editar/carros/{{_id}}"><button class="btn btn-warning mt-4">Editar postagem</button></a>
+            
+            <form action="/deletar/carros" method="POST">
+                <input type="hidden" name="id" value="{{_id}}">
+                <button class="btn btn-danger mt-4">Deletar</button>
+            </form>
         </div>
     </div>
 {{else}}

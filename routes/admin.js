@@ -118,4 +118,15 @@ router.post("/carro/editado", (req, res) => {
     }
 })
 
+//Botão deletar
+router.post("/deletar/carros", (req, res) => {
+    CadastroCar.remove({_id: req.body.id}).then(() => {
+        req.flash("success_msg", "Lista deletada com sucesso!")
+        res.redirect("/carros")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao deletar a lista de carro!")
+        res.redirect("/carros")
+    })
+})
+
 module.exports = router
