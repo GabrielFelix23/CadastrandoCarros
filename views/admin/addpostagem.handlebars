@@ -4,28 +4,28 @@
 {{/each}}
 
 <h3>Postagem</h3>
-
-<div class="card">
+<hr>
+<div class="card mt-4">
     <div class="card-body">
-        <form action="">
+        <form action="/postagem/carro" method="POST">
             <label for="titulo">Titulo</label>
-            <input type="text" id="titulo" name="titulo" class="form form-control">
+            <input type="text" id="titulo" name="titulo" class="form form-control" required>
 
             <label for="nome">Nome do carro</label>
-            <input type="text" id="nome" name="nome" class="form form-control">
+            <input type="text" id="nome" name="nome" class="form form-control" required>
 
             <label for="ano">Ano do carro</label>
-            <input type="text" id="ano" name="ano" class="form form-control">
+            <input type="text" id="ano" name="ano" class="form form-control" required>
 
             <label for="km">Quantos Km/h</label>
-            <input type="text" id="km" name="km" class="form form-control">
+            <input type="text" id="km" name="km" class="form form-control" required>
 
             <label for="preco">Preço do carro</label>
-            <input type="text" id="preco" name="preco" class="form form-control">
+            <input type="text" id="preco" name="preco" class="form form-control" required>
 
             <label for="postagem">Postagem</label>
-            <select name="postagem" class="custom-select">
-                {{#each postagens}}
+            <select name="categoria" class="custom-select">
+                {{#each cadastro}}
                     <option value="{{_id}}">{{nome}}</option>
                 {{else}}
                     <option value="0">Nenhum valor inserido</option>

@@ -1,0 +1,22 @@
+<h2>Lista de cadastos</h2>
+<a href="/carros"><button type="button" class="btn btn-primary mt-4">Voltar ao menu</button></a>
+<hr>
+{{#each postagens}}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h2>Titulo: {{titulo}}</h2>
+            <h2>Nome: {{nome}}</h2>
+            <h2>ano: {{ano}}</h2>
+            <h2>Km/h:{{km}}</h2>
+            <h2>R$Preço: {{preco}}</h2>
+            <h2>Postagem: {{categoria.nome}}</h2>
+            <h2>Data: {{data}}</h2>
+
+            <a href="/edit/postagem/{{_id}}"><button class="btn btn-success mt-4">Editar postagem</button></a>
+            <a href="/delete/postagem/{{_id}}"><button class="btn btn-danger mt-4">Delete</button></a>
+        </div>
+    </div>
+{{else}}
+    <h3>Nenhuma postagem criada!</h3>
+    <a href="/add/postagem"><button class="btn btn-primary mt-4">Criar postagem</button></a>
+{{/each}}

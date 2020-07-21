@@ -2,7 +2,9 @@ const express = require("express")
 const router = express.Router()
 const mongoose = require("mongoose")
 require("../models/Cadastro")
-const CadastroCar = mongoose.model("cadastros")
+const Cadastro = mongoose.model("cadastros")
+require("../models/Postagem")
+const Postagem = mongoose.model("postagens")
 
 router.get("/", (req, res) => {
     res.render("admin/index")
@@ -10,7 +12,7 @@ router.get("/", (req, res) => {
 
 //Botão Ver Carros
 router.get("/carros", (req, res) => {
-    CadastroCar.find().lean().sort({data: 'desc'}).then((carros) => {
+    Cadastro.find().lean().sort({data: 'desc'}).then((carros) => {
         res.render("admin/carros", {carros:carros})
     }).catch((err) => {
         req.flash("error_msg", "Houve um erro ao listar o carro!")
@@ -52,7 +54,7 @@ router.post("/novo/carro", (req, res) => {
             preco: req.body.preco,
             descricao: req.body.descricao
         }
-        new CadastroCar(novoCarro).save().then(() => {
+        new Cadastro(novoCarro).save().then(() => {
             req.flash("success_msg", "Carro cadastrado com sucesso!")
             res.redirect("/carros")
         }).catch((err) => {
@@ -62,26 +64,15 @@ router.post("/novo/carro", (req, res) => {
     }
 })
 
-//Postagem
-router.get("/postagem", (req, res) => {
-    CadastroCar.find().lean().then((postagens) => {
-        res.render("admin/postagem", {postagens:postagens})
-    }).catch((err) => {
-        req.flash("error_msg", "Houve um erro ao entrar na página da postagem!")
-        res.redirect("/carros")
-    })
-})
-
-//Botão Editar Postagem
+//Botão Editar lista
 router.get("/editar/carros/:id", (req, res) => {
-    CadastroCar.findOne({_id: req.params.id}).lean().then((carroEditar) => {
+    Cadastro.findOne({_id: req.params.id}).lean().then((carroEditar) => {
         res.render("admin/editarcarros", {carroEditar:carroEditar})
     }).catch((err) => {
         req.flash("error_msg", "Houve um erro ao editar. Tente novamente!")
         res.redirect("/carros")
     })
 })
-
 router.post("/carro/editado", (req, res) => {
     var erros = []
     if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
@@ -106,7 +97,7 @@ router.post("/carro/editado", (req, res) => {
         res.render("admin/editarcarros", {erros:erros})
     }
     else{
-        CadastroCar.findOne({_id: req.body.id}).sort({data: 'desc'}).then((carrosEditados) => {
+        Cadastro.findOne({_id: req.body.id}).sort({data: 'desc'}).then((carrosEditados) => {
             
             carrosEditados.nome = req.body.nome,
             carrosEditados.ano = req.body.ano,
@@ -127,9 +118,9 @@ router.post("/carro/editado", (req, res) => {
     }
 })
 
-//Botão deletar
+//Botão deletar lista
 router.post("/deletar/carros", (req, res) => {
-    CadastroCar.remove({_id: req.body.id}).then(() => {
+    Cadastro.remove({_id: req.body.id}).then(() => {
         req.flash("success_msg", "Lista deletada com sucesso!")
         res.redirect("/carros")
     }).catch((err) => {
@@ -137,5 +128,99 @@ router.post("/deletar/carros", (req, res) => {
         res.redirect("/carros")
     })
 })
+
+//Postagem
+router.get("/postagem", (req, res) => {
+    Postagem.find().populate("categoria").sort({data: 'desc'}).lean().then((postagens) => {
+        res.render("admin/listapostagens", {postagens:postagens})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao listar as postagens!")
+        res.redirect("/postagem")
+    })
+})
+router.get("/add/postagem", (req, res) => {  
+    Cadastro.find().lean().then((cadastro) => {
+        res.render("admin/addpostagem", {cadastro:cadastro})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao entrar na página da postagem!")
+        res.redirect("/carros")
+    })
+})
+router.post("/postagem/carro", (req, res) => {
+    var erros = []
+
+    if(req.body.categoria == "0"){
+        erros.push({texto: "Categoria inválida, registre uma categoria!"})
+    }
+    if(erros.length > 0){
+        res.render("admin/addpostagem", {erros:erros})
+    }else{
+        const novaPostagem = {
+            titulo: req.body.titulo,
+            nome: req.body.nome,
+            ano: req.body.ano,
+            km: req.body.km,
+            preco: req.body.preco,
+            categoria: req.body.categoria
+        }
+        new Postagem(novaPostagem).save().then(() => {
+            req.flash("success_msg", "Postagem criada com sucesso!")
+            res.redirect("/postagem")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve um erro ao criar a postagem!")
+            res.redirect("/add/postagem")
+        })
+    }
+})
+
+//Editar postagem
+router.get("/edit/postagem/:id", (req, res) => {
+    Postagem.findOne({_id: req.params.id}).lean().then((postagem) => {
+        
+        Cadastro.find().lean().then((cadastro) => {
+            res.render("admin/editpostagem", {cadastro:cadastro, postagem:postagem})
+        }).catch((err) => {
+            req.flash("error_msg", "Houve um erro ao entrar na postagem para editar!")
+            res.redirect("/postagem")
+        })
+
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao iniciar a edição da sua postagem!")
+        res.redirect("/postagem")
+    })
+})
+router.post("/postagem/editada", (req, res) => {
+    Postagem.findOne({_id: req.body.id}).then((postagem) => {
+        
+        postagem.titulo = req.body.titulo,
+        postagem.nome = req.body.nome,
+        postagem.ano = req.body.ano,
+        postagem.km = req.body.km,
+        postagem.preco = req.body.preco,
+        postagem.categoria = req.body.categoria
+        
+        postagem.save().then(() => {
+            req.flash("success_msg", "Postagem editada com sucesso!")
+            res.redirect("/postagem")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve um erro ao salva a sua edição!")
+            res.redirect("/postagem")
+        })
+    })
+})
+
+//Deletar postagem
+router.get("/delete/postagem/:id", (req, res) => {
+    Postagem.remove({_id: req.params.id}).lean().then(() => {
+        req.flash("success_msg", "Postagem deletada com sucesso!")
+        res.redirect("/postagem")
+    }).catch((err) => {
+        req.flash("error_msg","Houve um erro ao deletar esta postagem!")
+    })
+})
+
+
+
+
 
 module.exports = router
