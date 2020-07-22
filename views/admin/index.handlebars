@@ -1,22 +1,26 @@
-<div class="centralizadno">
-  <div class="row">
-    <div class="col text-center">
-        <a href="/carros" ><button type="button" class="btn btn-primary btn-lg">Ver carros</button></a>
-    </div>
-  </div>
+<div class="jumbotron">
+  <h1 class="display-4">Seja bem vindo(a) ao TecCar!</h1>
+  <p class="lead">Esta é uma plataforma para cadastro e vendas de carros online.</p>
+  <hr class="my-4">
+  <p>Faça o seu login e cadastre seu carro para venda.</p>
+  <a class="btn btn-info btn-lg" href="#" role="button">Login</a>
+  <a href="/carros" ><button type="button" class="btn btn-primary btn-lg">Ver carros</button></a>
+
 </div>
 
-<style>
-    body{
-        background-color: #81F7F3;
-    }
-    .centralizadno {
-        width: 50%;
-        height: 50%;
-        position:absolute;
-        top:50%;
-        left:42%;
-        margin-top:-60px;
-        margin-left:-17%;
-    }
-</style>
+{{#each postagens}}
+    <div class="card">
+      <div class="card-body">
+        <h3>{{titulo}}</h3><br>
+        <h4>Carro: {{nome}}</h4>
+        <h4>Km/h: {{km}}</h4>
+        <h4>Descrição: {{categoria.descricao}}</h4>
+      
+        <a href="/postagem/lista/{{nome}}"> 
+          <button class="btn btn-warning mt-4">Ler mais</button>
+        </a>
+      </div>
+    </div><br>
+{{else}}
+  <h3>Nenhuma postagem listada!</h3>
+{{/each}}

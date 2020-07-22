@@ -6,8 +6,55 @@ const Cadastro = mongoose.model("cadastros")
 require("../models/Postagem")
 const Postagem = mongoose.model("postagens")
 
+//Home
 router.get("/", (req, res) => {
-    res.render("admin/index")
+    Postagem.find().populate("categoria").sort({data: 'desc'}).lean().then((postagens) => {
+        res.render("admin/index", {postagens:postagens})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro interno!")
+        res.redirect("/404")
+    })
+})
+//Rota do erro 404
+router.get("/404", (req, res) => {
+    res.send("Erro 404")
+})
+//Lista de postagem
+router.get("/postagem/lista/:nome", (req, res) => {
+    Postagem.findOne({nome: req.params.nome}).lean().then((postagens) => {
+        res.render("postagens/index", {postagens:postagens})
+    }).catch((erro) => {
+        req.flash("error_msg", "Houve um erros ao lista esta postagem!")
+        res.redirect("/")
+    })
+})
+//Lista de Cadastro
+router.get("/cadastros/lista", (req, res) => {
+    Cadastro.find().lean().then((cadastros) => { 
+        res.render("cadastros/index", {cadastros:cadastros})    
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao listar este cadastro!")
+        res.redirect("/")
+    })
+})
+//Links dos cadastros para as postagens
+router.get("/cadastro/postagem/:nome", (req, res) => {
+    Cadastro.findOne({nome: req.params.nome}).lean().then((categoria) => {
+        if(categoria){
+            Postagem.find({categoria: categoria._id}).lean().then((postagem) => {
+                res.render("cadastros/postagens", {postagem:postagem, categoria:categoria })
+            }).catch((err) => {
+                req.flash("error_msg", "Esta postagem não existe!")
+                res.redirect("/cadastros/lista")
+            })
+        }else{
+            req.flash("error_msg", "Este cadastro não existe!")
+            res.redirect("/cadastros/lista")
+        }
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao lista a postagem!")
+        res.redirect("/cadastros/lista")
+    })
 })
 
 //Botão Ver Carros
@@ -32,16 +79,13 @@ router.post("/novo/carro", (req, res) => {
     if(!req.body.ano || typeof req.body.ano == undefined || req.body.ano == null){
         erros.push({texto: "Ano inválido!"})
     }
-    if(!req.body.preco || typeof req.body.preco == undefined || req.body.preco == null){
-        erros.push({texto: "Preço inválido!"})
-    }
     if(!req.body.descricao || typeof req.body.descricao == undefined || req.body.descricao == null){
-        erros.push({texto: "Descrição inválida!"})
+        erros.push({texto: "Descricão inválido!"})
     }
     if(req.body.nome.length < 2){
         erros.push({texto: "O nome está muito pequeno. Por favor alterar esse campo!"})
     }
-    if(req.body.descricao.length < 5){
+    if(req.body.descricao.length < 2){
         erros.push({texto: "A descrição está muito pequena. Por favor alterar esse campo!"})
     }
     if(erros.length > 0){
@@ -51,7 +95,6 @@ router.post("/novo/carro", (req, res) => {
         const novoCarro = {
             nome: req.body.nome,
             ano: req.body.ano,
-            preco: req.body.preco,
             descricao: req.body.descricao
         }
         new Cadastro(novoCarro).save().then(() => {
@@ -81,16 +124,13 @@ router.post("/carro/editado", (req, res) => {
     if(!req.body.ano || typeof req.body.ano == undefined || req.body.ano == null){
         erros.push({texto: "Ano inválido!"})
     }
-    if(!req.body.preco || typeof req.body.preco == undefined || req.body.preco == null){
-        erros.push({texto: "Preço inválido!"})
-    }
     if(!req.body.descricao || typeof req.body.descricao == undefined || req.body.descricao == null){
-        erros.push({texto: "Descrição inválida!"})
+        erros.push({texto: "Descricão inválido!"})
     }
     if(req.body.nome.length < 2){
         erros.push({texto: "O nome está muito pequeno. Por favor alterar esse campo!"})
     }
-    if(req.body.descricao.length < 5){
+    if(req.body.descricao.length < 2){
         erros.push({texto: "A descrição está muito pequena. Por favor alterar esse campo!"})
     }
     if(erros.length > 0){
@@ -101,7 +141,6 @@ router.post("/carro/editado", (req, res) => {
             
             carrosEditados.nome = req.body.nome,
             carrosEditados.ano = req.body.ano,
-            carrosEditados.preco = req.body.preco,
             carrosEditados.descricao = req.body.descricao
 
             carrosEditados.save().then(() => {
@@ -218,9 +257,5 @@ router.get("/delete/postagem/:id", (req, res) => {
         req.flash("error_msg","Houve um erro ao deletar esta postagem!")
     })
 })
-
-
-
-
 
 module.exports = router
