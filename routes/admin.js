@@ -30,7 +30,7 @@ router.get("/postagem/lista/:nome", (req, res) => {
 })
 //Lista de Cadastro
 router.get("/cadastros/lista", (req, res) => {
-    Cadastro.find().lean().then((cadastros) => { 
+    Cadastro.find().lean().sort({data: 'desc'}).then((cadastros) => { 
         res.render("cadastros/index", {cadastros:cadastros})    
     }).catch((err) => {
         req.flash("error_msg", "Houve um erro ao listar este cadastro!")
@@ -38,8 +38,8 @@ router.get("/cadastros/lista", (req, res) => {
     })
 })
 //Links dos cadastros para as postagens
-router.get("/cadastro/postagem/:nome", (req, res) => {
-    Cadastro.findOne({nome: req.params.nome}).lean().then((categoria) => {
+router.get("/cadastro/postagem/:nomeCarro", (req, res) => {
+    Cadastro.findOne({nomeCarro: req.params.nomeCarro}).lean().then((categoria) => {
         if(categoria){
             Postagem.find({categoria: categoria._id}).lean().then((postagem) => {
                 res.render("cadastros/postagens", {postagem:postagem, categoria:categoria })
@@ -73,8 +73,11 @@ router.get("/add/carros", (req, res) => {
 })
 router.post("/novo/carro", (req, res) => {
     var erros = []
-    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
-        erros.push({texto: "Nome inválido!"})
+    if(!req.body.nomeUser || typeof req.body.nomeUser == undefined || req.body.nomeUser == null){
+        erros.push({texto: "Nome do proprietario inválido!"})
+    }
+    if(!req.body.nomeCarro || typeof req.body.nomeCarro == undefined || req.body.nomeCarro == null){
+        erros.push({texto: "Nome do carro está inválido!"})
     }
     if(!req.body.ano || typeof req.body.ano == undefined || req.body.ano == null){
         erros.push({texto: "Ano inválido!"})
@@ -82,7 +85,10 @@ router.post("/novo/carro", (req, res) => {
     if(!req.body.descricao || typeof req.body.descricao == undefined || req.body.descricao == null){
         erros.push({texto: "Descricão inválido!"})
     }
-    if(req.body.nome.length < 2){
+    if(req.body.nomeUser.length < 2){
+        erros.push({texto: "O nome do proprietario está muito pequeno. Por favor alterar esse campo!"})
+    }
+    if(req.body.nomeCarro.length < 2){
         erros.push({texto: "O nome está muito pequeno. Por favor alterar esse campo!"})
     }
     if(req.body.descricao.length < 2){
@@ -93,7 +99,8 @@ router.post("/novo/carro", (req, res) => {
     }
     else{
         const novoCarro = {
-            nome: req.body.nome,
+            nomeUser: req.body.nomeUser,
+            nomeCarro: req.body.nomeCarro,
             ano: req.body.ano,
             descricao: req.body.descricao
         }
@@ -118,8 +125,11 @@ router.get("/editar/carros/:id", (req, res) => {
 })
 router.post("/carro/editado", (req, res) => {
     var erros = []
-    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
-        erros.push({texto: "Nome inválido!"})
+    if(!req.body.nomeUser || typeof req.body.nomeUser == undefined || req.body.nomeUser == null){
+        erros.push({texto: "Nome do proprietario está inválido!"})
+    }
+    if(!req.body.nomeCarro || typeof req.body.nomeCarro == undefined || req.body.nomeCarro == null){
+        erros.push({texto: "Nome do carro inválido!"})
     }
     if(!req.body.ano || typeof req.body.ano == undefined || req.body.ano == null){
         erros.push({texto: "Ano inválido!"})
@@ -127,8 +137,11 @@ router.post("/carro/editado", (req, res) => {
     if(!req.body.descricao || typeof req.body.descricao == undefined || req.body.descricao == null){
         erros.push({texto: "Descricão inválido!"})
     }
-    if(req.body.nome.length < 2){
-        erros.push({texto: "O nome está muito pequeno. Por favor alterar esse campo!"})
+    if(req.body.nomeUser.length < 4){
+        erros.push({texto: "O nome do proprietario está muito pequeno. Por favor alterar esse campo!"})
+    }
+    if(req.body.nomeCarro.length < 2){
+        erros.push({texto: "O nome do carro está muito pequeno. Por favor alterar esse campo!"})
     }
     if(req.body.descricao.length < 2){
         erros.push({texto: "A descrição está muito pequena. Por favor alterar esse campo!"})
@@ -139,7 +152,8 @@ router.post("/carro/editado", (req, res) => {
     else{
         Cadastro.findOne({_id: req.body.id}).sort({data: 'desc'}).then((carrosEditados) => {
             
-            carrosEditados.nome = req.body.nome,
+            carrosEditados.nomeUser = req.body.nomeUser,
+            carrosEditados.nomeCarro = req.body.nomeCarro,
             carrosEditados.ano = req.body.ano,
             carrosEditados.descricao = req.body.descricao
 

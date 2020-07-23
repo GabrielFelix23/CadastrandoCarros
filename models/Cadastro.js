@@ -2,7 +2,11 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const CadastroCar = new Schema({
-    nome:{
+    nomeUser:{
+        type: String,
+        required: true
+    },
+    nomeCarro:{
         type: String,
         required: true
     },

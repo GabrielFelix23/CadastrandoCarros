@@ -7,6 +7,9 @@ const path = require("path")
 const router = require("./routes/admin")
 const session = require("express-session")
 const flash = require("connect-flash")
+const usuarios = require("./routes/usuarios")
+const passpost = require("passport")
+require("./confg/auth")
 
 //Configurações das Midllewares
     //Session
@@ -15,12 +18,16 @@ const flash = require("connect-flash")
         resave: true,
         saveUninitialized: true
     }))
+    //Passport
+    app.use(passpost.initialize())
+    app.use(passpost.session())
     //Flash
     app.use(flash())
     //Middleware
     app.use((req, res, next) => {
         res.locals.success_msg = req.flash("success_msg")
         res.locals.error_msg = req.flash("error_msg")
+        res.locals.error = req.flash("error")
         next()
     })
     //Mongoose banco de dados
@@ -48,6 +55,7 @@ const flash = require("connect-flash")
 
     //Rotas
     app.use("/", router)
+    app.use("/usuarios", usuarios)
     
 //servidor
 const porta = 8080
