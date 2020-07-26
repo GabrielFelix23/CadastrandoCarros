@@ -249,16 +249,19 @@ router.post("/postagem/editada", (req, res) => {
         postagem.nome = req.body.nome,
         postagem.ano = req.body.ano,
         postagem.km = req.body.km,
-        postagem.preco = req.body.preco,
-        postagem.categoria = req.body.categoria
+        postagem.preco = req.body.preco
         
         postagem.save().then(() => {
             req.flash("success_msg", "Postagem editada com sucesso!")
             res.redirect("/postagem")
         }).catch((err) => {
             req.flash("error_msg", "Houve um erro ao salva a sua edição!")
+            console.log("Erro: " + err)
             res.redirect("/postagem")
         })
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro interno!")
+        res.redirect("/postagem")
     })
 })
 
