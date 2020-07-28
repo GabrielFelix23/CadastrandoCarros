@@ -1,27 +1,32 @@
-<a href="/"><button class="btn btn-success ">Menu</button></a>
-<a href="/add/carros"><button class="btn btn-primary ">Cadastrar +</button></a>
-<a href="/add/postagem"><button class="btn btn-warning">Fazer postagem</button></a>
-<a href="/postagem" ><button type="button" class="btn btn-info">Ver Listas</button></a> 
-
+<div class="container">
+    <a href="/"><button class="btn btn-success ">Menu</button></a>
+    <a href="/add/carros"><button class="btn btn-primary ">Cadastrar +</button></a>
+    <a href="/add/postagem"><button class="btn btn-warning">Fazer postagem</button></a>
+    <a href="/postagem" ><button type="button" class="btn btn-info">Ver Listas</button></a> 
+    <hr>
+</div>
 {{#each carros}}
-    <div class="card mt-4">
-        <div class="card-body">
-            <h4>Nome do proprietario: {{nomeUser}}</h4>
-            <h4>Nome do carro: {{nomeCarro}}</h4>
-            <h4>Ano: {{ano}}</h4>
-            <h4>Descrição: {{descricao}}</h4>
-            <h4>Data da postagem: {{data}}</h4>
-            
-            <a href="/editar/carros/{{_id}}">
-                <button class="btn btn-warning mt-4">Editar postagem</button>
-            </a>
-            <form action="/deletar/carros" method="POST">
-                <input type="hidden" name="id" value="{{_id}}">
-                <button class="btn btn-danger mt-2">Deletar</button>
-            </form>
-
+<div class="d-flex justify-content-center">
+    <div class="col-sm-9">
+        <div class="card mt-4">
+            <div class="card-body">
+                <h4>Nome do proprietario: {{nomeUser}}</h4>
+                <h4>Nome do carro: {{nomeCarro}}</h4>
+                <h4>Ano: {{ano}}</h4>
+                <h4>Descrição: {{descricao}}</h4>
+                <h4>Data da postagem: {{data}}</h4>
+                
+                <a href="/editar/carros/{{_id}}">
+                    <button class="btn btn-warning mt-4">Editar postagem</button>
+                </a>
+                <form action="/deletar/carros" method="POST">
+                    <input type="hidden" name="id" value="{{_id}}">
+                    <button class="btn btn-danger mt-2">Deletar</button>
+                </form>
+            </div>
         </div>
     </div>
+</div>
 {{else}}
     <h3 class="mt-4">Nunhum carro cadastrado!</h3>
 {{/each}}

@@ -41,15 +41,6 @@ router.get("/postagem/lista/:nome", (req, res) => {
         res.redirect("/")
     })
 })
-//Lista de Cadastro
-router.get("/cadastros/lista", (req, res) => {
-    Cadastro.find().lean().sort({data: 'desc'}).then((cadastros) => { 
-        res.render("cadastros/index", {cadastros:cadastros})    
-    }).catch((err) => {
-        req.flash("error_msg", "Houve um erro ao listar este cadastro!")
-        res.redirect("/")
-    })
-})
 //Links dos cadastros para as postagens
 router.get("/cadastro/postagem/:nomeCarro", (req, res) => {
     Cadastro.findOne({nomeCarro: req.params.nomeCarro}).lean().then((categoria) => {

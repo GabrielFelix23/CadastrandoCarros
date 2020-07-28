@@ -2,29 +2,36 @@
     <div class="alert alert-danger">{{texto}}</div>
 {{else}}
 {{/each}}
+<div class="container">
+    <h1>Adicione um novo carro aqui:</h1>
+    <hr>
+</div>
+<div class="container mt-4">
+    <div class="d-flex justify-content-center">
+        <div class="col-sm-7">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/novo/carro" method="POST">
+                        <label for="nomeUser">Nome do proprietário:</label>
+                        <input type="text" id="nomeUser" name="nomeUser" placeholder="Digite o seu nome: " class="form-control" >
 
-<h1>Adicione um novo carro aqui:</h1>
-<hr>
-<div class="card">
-    <div class="card-body">
-        <form action="/novo/carro" method="POST">
-            <label for="nomeUser">Nome do proprietário:</label>
-            <input type="text" id="nomeUser" name="nomeUser" placeholder="Digite o seu nome: " class="form-control" >
+                        <label for="nomeCarro">Nome do carro: </label>
+                        <input type="text" id="nomeCarro" name="nomeCarro" placeholder="Digite o nome do carro: " class="form-control">
 
-            <label for="nomeCarro">Nome do carro: </label>
-            <input type="text" id="nomeCarro" name="nomeCarro" placeholder="Digite o nome do carro: " class="form-control">
+                        <label for="ano">Ano: </label>
+                        <input type="text" id="ano" name="ano" placeholder="Digite o ano do carro? " class="form-control">
 
-            <label for="ano">Ano: </label>
-            <input type="text" id="ano" name="ano" placeholder="Digite o ano do carro? " class="form-control">
+                        <label for="descricao">Descrição: </label>
+                        <input type="text" id="descricao" name="descricao" placeholder="Digite o ano do carro? " class="form-control">
 
-            <label for="descricao">Descrição: </label>
-            <input type="text" id="descricao" name="descricao" placeholder="Digite o ano do carro? " class="form-control">
+                        <br>
+                        <button type="submit" class="btn btn-success">Adicionar</button>
+                        <a href="/carros"><button type="button" class="btn btn-primary">Voltar</button></a>
 
-            <br>
-            <button type="submit" class="btn btn-success">Adicionar</button>
-            <a href="/carros"><button type="button" class="btn btn-primary">Voltar</button></a>
-
-        </form>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

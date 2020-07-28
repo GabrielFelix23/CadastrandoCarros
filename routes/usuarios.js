@@ -91,6 +91,15 @@ router.get("/registro/usuario", (req, res) => {
     })
 })
 
+router.get("/editar/:id", (req, res) => {
+    Usuario.findOne({_id: req.params.id}).lean().then((editarUser) => {
+        res.render("usuarios/editarRegistro", {editarUser:editarUser})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao editar este perfil!")
+        res.redirect("/usuarios/registro/usuario")
+    })
+})
+
 router.post("/editar", (req, res) => {
     var erros = []
     
@@ -104,22 +113,21 @@ router.post("/editar", (req, res) => {
         res.render("usuarios/editarRegistro", {erros:erros})
     }
     else{
-        Usuario.findOne({email: req.body.email}).lean().then(() => {
-            const perfilEditado = new Usuario({
-                nome: req.body.nome,
-                email: req.body.email,
-                senha: req.body.senha,
-                eAdmin: 1
-            })
-
+        Usuario.findOne({email: req.body.email}).then((usuarioEdit) => {
+            
+                usuarioEdit.nome = req.body.nome,
+                usuarioEdit.email = req.body.email,
+                usuarioEdit.senha = req.body.senha,
+                usuarioEdit.eAdmin = 1
+            
             bcrypt.genSalt(10, (erro, salt) => {
-                bcrypt.hash(perfilEditado.senha, salt, (erro, hash) => {
+                bcrypt.hash(usuarioEdit.senha, salt, (erro, hash) => {
                     if(erro){
                         req.flash("error_msg", "Houve um erro no salvamento!")
                         res.redirect("/usuarios/registro/usuario")
                     }
-                    perfilEditado.senha = hash
-                    perfilEditado.save().then(() => {
+                     usuarioEdit.senha = hash
+                     usuarioEdit.save().then(() => {
                         req.flash("success_msg", "Usuario editado com sucesso!")
                         res.redirect("/usuarios/registro/usuario")
                     }).catch((err) => {
@@ -135,15 +143,6 @@ router.post("/editar", (req, res) => {
         })
 
     }
-})
-
-router.get("/editar/:id", (req, res) => {
-    Usuario.findOne({_id: req.params.id}).lean().then((editarUser) => {
-        res.render("usuarios/editarRegistro", {editarUser:editarUser})
-    }).catch((err) => {
-        req.flash("error_msg", "Houve um erro ao editar este perfil!")
-        res.redirect("/usuarios/registro/usuario")
-    })
 })
 
 router.get("/deletar/:id", (req, res) => {

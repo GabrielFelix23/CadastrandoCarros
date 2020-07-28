@@ -1,19 +1,29 @@
-<h2>Perfis cadastrados:</h2>
-{{#each registro}}
-    <div class="card mt-4">
-        <div class="card-body">
-            <h3>Nome: {{nome}}</h3>
-            <h3>Email: {{email}}</h3>
-            <h3>Senha: {{senha}}</h3>
-        </div>
-        <a href="/usuarios/editar/{{_id}}">
-            <button class="btn btn-primary" type="submit">Editar</button>
-        </a>
+<div class="container">
+    <h2>Perfis cadastrados:</h2>
+    <hr>
+</div>
 
-        <a class="mt-2" href="/usuarios/deletar/{{_id}}">
-            <button class="btn btn-danger" type="submit">Deletar</button>
-        </a>
+{{#each registro}}
+<div class="d-flex justify-content-center">
+    <div class="col-sm-6">
+        <div class="card mt-4">
+            <div class="card-body">
+                <h3>Nome: {{nome}}</h3>
+                <h3>Email: {{email}}</h3>
+                
+                <a href="/usuarios/editar/{{_id}}">
+                    <button class="btn btn-primary mt-3" type="submit">Editar</button>
+                </a>
+                <a href="/carros">
+                    <button class="btn btn-success mt-3" type="submit">Voltar</button>
+                </a>
+                <a class="mt-2" href="/usuarios/deletar/{{_id}}">
+                    <button class="btn btn-danger mt-3" type="submit">Deletar</button>
+                </a>
+            </div>
+        </div>
     </div>
+</div>
 {{else}}
     <h4 class="mt-4">Nenhum perfil cadastrado!</h4>
 {{/each}}
