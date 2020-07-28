@@ -15,9 +15,15 @@
               <li class="nav-item active">
                 <a class="nav-link" href="/cadastros/lista">Cadastros &nbsp;&nbsp;|</a>
               </li>
+              {{#if user}}
+              <li class="nav-item active">
+                <a class="nav-link" href="/logout" style="color: red;">Sair</a>
+              </li>
+              {{else}}
               <li class="nav-item active">
                 <a class="nav-link" href="/usuarios/login" style="color: red;">Login</a>
               </li>
+              {{/if}}
             </ul>
           </div>
       

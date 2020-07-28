@@ -5,6 +5,7 @@ require("../models/Cadastro")
 const Cadastro = mongoose.model("cadastros")
 require("../models/Postagem")
 const Postagem = mongoose.model("postagens")
+const {eAdmin} = require("../helpers/eAdmin")
 
 //Home
 router.get("/", (req, res) => {
@@ -58,7 +59,7 @@ router.get("/cadastro/postagem/:nomeCarro", (req, res) => {
 })
 
 //Botão Ver Carros
-router.get("/carros", (req, res) => {
+router.get("/carros", eAdmin, (req, res) => {
     Cadastro.find().lean().sort({data: 'desc'}).then((carros) => {
         res.render("admin/carros", {carros:carros})
     }).catch((err) => {
@@ -68,10 +69,10 @@ router.get("/carros", (req, res) => {
 })
 
 //Cadastrar +
-router.get("/add/carros", (req, res) => {
+router.get("/add/carros", eAdmin, (req, res) => {
     res.render("admin/addcarros")
 })
-router.post("/novo/carro", (req, res) => {
+router.post("/novo/carro", eAdmin, (req, res) => {
     var erros = []
     if(!req.body.nomeUser || typeof req.body.nomeUser == undefined || req.body.nomeUser == null){
         erros.push({texto: "Nome do proprietario inválido!"})
@@ -115,7 +116,7 @@ router.post("/novo/carro", (req, res) => {
 })
 
 //Botão Editar lista
-router.get("/editar/carros/:id", (req, res) => {
+router.get("/editar/carros/:id", eAdmin, (req, res) => {
     Cadastro.findOne({_id: req.params.id}).lean().then((carroEditar) => {
         res.render("admin/editarcarros", {carroEditar:carroEditar})
     }).catch((err) => {
@@ -123,7 +124,7 @@ router.get("/editar/carros/:id", (req, res) => {
         res.redirect("/carros")
     })
 })
-router.post("/carro/editado", (req, res) => {
+router.post("/carro/editado", eAdmin, (req, res) => {
     var erros = []
     if(!req.body.nomeUser || typeof req.body.nomeUser == undefined || req.body.nomeUser == null){
         erros.push({texto: "Nome do proprietario está inválido!"})
@@ -172,7 +173,7 @@ router.post("/carro/editado", (req, res) => {
 })
 
 //Botão deletar lista
-router.post("/deletar/carros", (req, res) => {
+router.post("/deletar/carros", eAdmin, (req, res) => {
     Cadastro.remove({_id: req.body.id}).then(() => {
         req.flash("success_msg", "Lista deletada com sucesso!")
         res.redirect("/carros")
@@ -183,7 +184,7 @@ router.post("/deletar/carros", (req, res) => {
 })
 
 //Postagem
-router.get("/postagem", (req, res) => {
+router.get("/postagem", eAdmin, (req, res) => {
     Postagem.find().populate("categoria").sort({data: 'desc'}).lean().then((postagens) => {
         res.render("admin/listapostagens", {postagens:postagens})
     }).catch((err) => {
@@ -191,7 +192,7 @@ router.get("/postagem", (req, res) => {
         res.redirect("/postagem")
     })
 })
-router.get("/add/postagem", (req, res) => {  
+router.get("/add/postagem", eAdmin, (req, res) => {  
     Cadastro.find().lean().then((cadastro) => {
         res.render("admin/addpostagem", {cadastro:cadastro})
     }).catch((err) => {
@@ -199,7 +200,7 @@ router.get("/add/postagem", (req, res) => {
         res.redirect("/carros")
     })
 })
-router.post("/postagem/carro", (req, res) => {
+router.post("/postagem/carro", eAdmin, (req, res) => {
     var erros = []
 
     if(req.body.categoria == "0"){
@@ -227,7 +228,7 @@ router.post("/postagem/carro", (req, res) => {
 })
 
 //Editar postagem
-router.get("/edit/postagem/:id", (req, res) => {
+router.get("/edit/postagem/:id", eAdmin, (req, res) => {
     Postagem.findOne({_id: req.params.id}).lean().then((postagem) => {
         
         Cadastro.find().lean().then((cadastro) => {
@@ -242,7 +243,7 @@ router.get("/edit/postagem/:id", (req, res) => {
         res.redirect("/postagem")
     })
 })
-router.post("/postagem/editada", (req, res) => {
+router.post("/postagem/editada", eAdmin, (req, res) => {
     Postagem.findOne({_id: req.body.id}).then((postagem) => {
         
         postagem.titulo = req.body.titulo,
@@ -266,13 +267,21 @@ router.post("/postagem/editada", (req, res) => {
 })
 
 //Deletar postagem
-router.get("/delete/postagem/:id", (req, res) => {
+router.get("/delete/postagem/:id", eAdmin, (req, res) => {
     Postagem.remove({_id: req.params.id}).lean().then(() => {
         req.flash("success_msg", "Postagem deletada com sucesso!")
         res.redirect("/postagem")
     }).catch((err) => {
         req.flash("error_msg","Houve um erro ao deletar esta postagem!")
     })
+})
+
+///logout
+router.get("/logout", (req, res) => {
+    req.logout()
+
+    req.flash("success_msg", "Deslogado com sucesso!")
+    res.redirect("/")
 })
 
 module.exports = router
