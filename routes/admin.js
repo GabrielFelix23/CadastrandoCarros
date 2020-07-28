@@ -9,7 +9,7 @@ const {eAdmin} = require("../helpers/eAdmin")
 require("../models/Usuario")
 const Usuario = mongoose.model("usuarios")
 
-
+//Nome do user conectado na navbar
 router.get("/nome", (req, res) => {
     Usuario.find().lean().then((user) => {
         res.render("partials/_navbar", {user:user})
@@ -18,7 +18,6 @@ router.get("/nome", (req, res) => {
         res.redirect("/")
     })
 })
-
 
 //Home
 router.get("/", (req, res) => {

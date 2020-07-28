@@ -13,18 +13,24 @@
                 <a class="nav-link" href="/">Home</a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="/cadastros/lista">Cadastros &nbsp;&nbsp;|</a>
+                <a class="nav-link" href="/cadastros/lista">Cadastros</a>
               </li>
+
               {{#if user}}
-              <li class="nav-item active">
-                <a class="nav-link" href="/logout" style="color: red;">Sair</a>
-              </li>
-              
-              <h5 style="color: white; margin-top: 7px">Olá,&nbsp;</h5>
-              {{#each user}}
-                <h5 style="color: white; margin-top: 7px"> {{nome}}</h5>
-              {{else}}
-              {{/each}} 
+              <div class="dropdown">
+                <button class="btn dropdown-toggle" style="color: white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Configurações
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="/usuarios/registro/usuario">Editar perfil</a>
+                  <a class="dropdown-item" style="color: red;" href="/logout">Sair</a>
+                </div>
+              </div>
+                <h5 style="color: white; margin-top: 7px">| &nbsp; Olá,&nbsp;</h5>
+                {{#each user}}
+                  <h5 style="color: red; margin-top: 7px"> {{nome}}</h5>
+                {{else}}
+                {{/each}} 
 
               {{else}}
               <li class="nav-item active">

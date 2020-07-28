@@ -47,6 +47,7 @@ router.post("/resgistro", (req, res) => {
                     bcrypt.hash(novoUsuario.senha, salt, (erro, hash) => {
                         if(erro){
                             req.flash("error_msg", "Houve um erro no salvamento!")
+                            res.redirect("/")
                         }
                         novoUsuario.senha = hash
                         novoUsuario.save().then(() => {
@@ -78,6 +79,81 @@ router.post("/login", passport.authenticate('local', {
     failureFlash: true
 }), (req, res) => {
     res.redirect("/")
+})
+
+//Botão configurações "EDITAR PERFIL"
+router.get("/registro/usuario", (req, res) => {
+    Usuario.find().lean().then((registro) => {
+        res.render("usuarios/userRegistro", {registro:registro})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao listar os Perfis!")
+        res.redirect("/usuarios/registro/usuario")
+    })
+})
+
+router.post("/editar", (req, res) => {
+    var erros = []
+    
+    if(req.body.senha.length < 4){
+        erros.push({texto: "Senhas muito pequena!"})
+    }
+    if(req.body.senha != req.body.confSenha){
+        erros.push({texto: "Senhas difentes!"})
+    }
+    if(erros.length > 0){
+        res.render("usuarios/editarRegistro", {erros:erros})
+    }
+    else{
+        Usuario.findOne({email: req.body.email}).lean().then(() => {
+            const perfilEditado = new Usuario({
+                nome: req.body.nome,
+                email: req.body.email,
+                senha: req.body.senha,
+                eAdmin: 1
+            })
+
+            bcrypt.genSalt(10, (erro, salt) => {
+                bcrypt.hash(perfilEditado.senha, salt, (erro, hash) => {
+                    if(erro){
+                        req.flash("error_msg", "Houve um erro no salvamento!")
+                        res.redirect("/usuarios/registro/usuario")
+                    }
+                    perfilEditado.senha = hash
+                    perfilEditado.save().then(() => {
+                        req.flash("success_msg", "Usuario editado com sucesso!")
+                        res.redirect("/usuarios/registro/usuario")
+                    }).catch((err) => {
+                        req.flash("error_msg", "Houve um erro ao editar o usuario. Tente novamente mais tarde!")
+                        res.redirect("/usuarios/registro/usuario")
+                    })
+                })
+            })
+        }).catch((err) => {
+            req.flash("error_msg", "Houve um erro interno!")
+            res.redirect("/usuarios/registro/usuario")
+            console.log("Erro interno: " + err)
+        })
+
+    }
+})
+
+router.get("/editar/:id", (req, res) => {
+    Usuario.findOne({_id: req.params.id}).lean().then((editarUser) => {
+        res.render("usuarios/editarRegistro", {editarUser:editarUser})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao editar este perfil!")
+        res.redirect("/usuarios/registro/usuario")
+    })
+})
+
+router.get("/deletar/:id", (req, res) => {
+    Usuario.remove({_id: req.params.id}).then(() => {
+        req.flash("success_msg", "Perfil deletado com sucesso!")
+        res.redirect("/usuarios/registro/usuario")
+    }).catch((err) => {
+        req.flash("error_msg","Houve um erro ao deletar esse perfil!")
+        res.redirect("/usuarios/registro/usuario")
+    })
 })
 
 module.exports = router
