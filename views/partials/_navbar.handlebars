@@ -19,13 +19,20 @@
               <li class="nav-item active">
                 <a class="nav-link" href="/logout" style="color: red;">Sair</a>
               </li>
+              
+              <h5 style="color: white; margin-top: 7px">Olá,&nbsp;</h5>
+              {{#each user}}
+                <h5 style="color: white; margin-top: 7px"> {{nome}}</h5>
+              {{else}}
+              {{/each}} 
+
               {{else}}
               <li class="nav-item active">
                 <a class="nav-link" href="/usuarios/login" style="color: red;">Login</a>
               </li>
               {{/if}}
-            </ul>
+            </ul>    
+                 
           </div>
-      
         </div>
-</nav>
+</nav>  

@@ -6,6 +6,19 @@ const Cadastro = mongoose.model("cadastros")
 require("../models/Postagem")
 const Postagem = mongoose.model("postagens")
 const {eAdmin} = require("../helpers/eAdmin")
+require("../models/Usuario")
+const Usuario = mongoose.model("usuarios")
+
+
+router.get("/nome", (req, res) => {
+    Usuario.find().lean().then((user) => {
+        res.render("partials/_navbar", {user:user})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao mostrar o nome do user")
+        res.redirect("/")
+    })
+})
+
 
 //Home
 router.get("/", (req, res) => {
