@@ -2,40 +2,47 @@
     <div class="alert alert-danger">{{texto}}</div>
 {{else}}
 {{/each}}
-
-<h3>Postagem</h3>
-<hr>
-<div class="card mt-4">
-    <div class="card-body">
-        <form action="/postagem/carro" method="POST">
-            <label for="titulo">Titulo</label>
-            <input type="text" id="titulo" name="titulo" class="form form-control" required>
-
-            <label for="nome">Nome do carro</label>
-            <input type="text" id="nome" name="nome" class="form form-control" required>
-
-            <label for="ano">Ano do carro</label>
-            <input type="text" id="ano" name="ano" class="form form-control" required>
-
-            <label for="km">Quantos Km/h</label>
-            <input type="text" id="km" name="km" class="form form-control" required>
-
-            <label for="preco">Preço do carro</label>
-            <input type="text" id="preco" name="preco" class="form form-control" required>
-
-            <label for="postagem">Postagem</label>
-            <select name="categoria" class="custom-select">
-                {{#each cadastro}}
-                    <option value="{{_id}}">{{nomeCarro}}</option>
-                {{else}}
-                    <option value="0">Nenhum valor inserido</option>
-                {{/each}}
-            </select>
-
-            <button type="submit" class="btn btn-success mt-4">Postar</button>
-            <a href="/carros">
-                <button type="button" class="btn btn-primary mt-4">Voltar</button>
-            </a>
-        </form>
-    </div>
+<div class="container">
+    <h2>Postagem</h2>
+    <hr>
 </div>
+
+    <div class="d-flex justify-content-center">
+        <div class="col-sm-7">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <form action="/postagem/carro" method="POST">
+                        <label for="titulo">Titulo</label>
+                        <input type="text" id="titulo" name="titulo" class="form form-control" required>
+
+                        <label for="nome">Nome do carro</label>
+                        <input type="text" id="nome" name="nome" class="form form-control" required>
+
+                        <label for="ano">Ano do carro</label>
+                        <input type="text" id="ano" name="ano" class="form form-control" required>
+
+                        <label for="km">Quantos Km/h</label>
+                        <input type="text" id="km" name="km" class="form form-control" required>
+
+                        <label for="preco">Preço do carro</label>
+                        <input type="text" id="preco" name="preco" class="form form-control" required>
+
+                        <label for="postagem">Postagem</label>
+                        <select name="categoria" class="custom-select">
+                            {{#each cadastro}}
+                                <option value="{{_id}}">{{nomeCarro}}</option>
+                            {{else}}
+                                <option value="0">Nenhum valor inserido</option>
+                            {{/each}}
+                        </select>
+
+                        <button type="submit" class="btn btn-success mt-4">Postar</button>
+                        <a href="/carros">
+                            <button type="button" class="btn btn-primary mt-4">Voltar</button>
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><br>
+

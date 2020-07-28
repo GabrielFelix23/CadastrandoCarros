@@ -2,33 +2,38 @@
     <div class="alert alert-danger">{{texto}}</div>
 {{else}}
 {{/each}}
-
-<h1>Edite seu carro aqui:</h1>
-<hr>
-<div class="card">
-    <div class="card-body">
-        <form action="/carro/editado" method="POST">
-            <input type="hidden" name="id" value="{{carroEditar._id}}">
-            <label for="nomeUser">Nome do proprietário:</label>
-            <input type="text" id="nomeUser" name="nomeUser" placeholder="Digite o seu nome: " class="form-control" value="{{carroEditar.nomeUser}}">
-
-            <label for="nomeCarro">Nome do carro: </label>
-            <input type="text" id="nomeCarro" name="nomeCarro" placeholder="Digite o nome do carro: " class="form-control" value="{{carroEditar.nomeCarro}}">
-
-            <label for="ano">Ano: </label>
-            <input type="text" id="ano" name="ano" placeholder="Digite o ano do carro? " class="form-control" value="{{carroEditar.ano}}">
-            
-            <label for="descricao">Descrição: </label>
-            <input type="text" id="descricao" name="descricao" placeholder="Digite o ano do carro? " class="form-control" value="{{carroEditar.descricao}}">
-
-            <br>
-            <button type="submit" class="btn btn-success">Editar</button>
-            <a href="/carros">
-                <button type="button" class="btn btn-primary">Cancelar</button>
-            </a>
-        </form>
-    </div>
+<div class="container">
+    <h2>Edite seu carro aqui:</h2>
+    <hr>
 </div>
+    <div class="d-flex justify-content-center">
+        <div class="col-sm-7">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/carro/editado" method="POST">
+                        <input type="hidden" name="id" value="{{carroEditar._id}}">
+                        <label for="nomeUser">Nome do proprietário:</label>
+                        <input type="text" id="nomeUser" name="nomeUser" placeholder="Digite o seu nome: " class="form-control" value="{{carroEditar.nomeUser}}">
+
+                        <label for="nomeCarro">Nome do carro: </label>
+                        <input type="text" id="nomeCarro" name="nomeCarro" placeholder="Digite o nome do carro: " class="form-control" value="{{carroEditar.nomeCarro}}">
+
+                        <label for="ano">Ano: </label>
+                        <input type="text" id="ano" name="ano" placeholder="Digite o ano do carro? " class="form-control" value="{{carroEditar.ano}}">
+                        
+                        <label for="descricao">Descrição: </label>
+                        <input type="text" id="descricao" name="descricao" placeholder="Digite o ano do carro? " class="form-control" value="{{carroEditar.descricao}}">
+
+                        <br>
+                        <button type="submit" class="btn btn-success">Editar</button>
+                        <a href="/carros">
+                            <button type="button" class="btn btn-primary">Cancelar</button>
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <style>
     body{

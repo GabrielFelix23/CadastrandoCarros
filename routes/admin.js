@@ -41,25 +41,6 @@ router.get("/postagem/lista/:nome", (req, res) => {
         res.redirect("/")
     })
 })
-//Links dos cadastros para as postagens
-router.get("/cadastro/postagem/:nomeCarro", (req, res) => {
-    Cadastro.findOne({nomeCarro: req.params.nomeCarro}).lean().then((categoria) => {
-        if(categoria){
-            Postagem.find({categoria: categoria._id}).lean().then((postagem) => {
-                res.render("cadastros/postagens", {postagem:postagem, categoria:categoria })
-            }).catch((err) => {
-                req.flash("error_msg", "Esta postagem não existe!")
-                res.redirect("/cadastros/lista")
-            })
-        }else{
-            req.flash("error_msg", "Este cadastro não existe!")
-            res.redirect("/cadastros/lista")
-        }
-    }).catch((err) => {
-        req.flash("error_msg", "Houve um erro ao lista a postagem!")
-        res.redirect("/cadastros/lista")
-    })
-})
 
 //Botão Ver Carros
 router.get("/carros", eAdmin, (req, res) => {
