@@ -3,29 +3,36 @@
 {{else}}
 {{/each}}
 
-<h3>Fazer perfil:</h3>
-<div class="card">
-    <div class="card-body">
-        <form action="/usuarios/resgistro" method="post">
-            <label for="nome">Nome: </label>
-            <input type="text" name="nome" class="form-control">
+<div class="d-flex justify-content-center">
+    <div class="col-sm-5">
+        <h3>Criar conta: </h3>
+        <hr>
+        <div class="card mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/usuarios/resgistro" method="post">
+                        <label for="nome">Nome: </label>
+                        <input type="text" name="nome" class="form-control">
 
-            <label for="email">E-mail: </label>
-            <input type="email" name="email" class="form-control">
+                        <label for="email">E-mail: </label>
+                        <input type="email" name="email" class="form-control">
 
-            <label for="senha">Senha: </label>
-            <input type="password" name="senha" class="form-control">
+                        <label for="senha">Senha: </label>
+                        <input type="password" name="senha" class="form-control">
 
-            <label for="confSenha">Confirme sua senha: </label>
-            <input type="password" name="confSenha" class="form-control">
+                        <label for="confSenha">Confirme sua senha: </label>
+                        <input type="password" name="confSenha" class="form-control">
 
-            <button type="submit" class="btn btn-success mt-4">Criar</button>
-            <a href="/usuarios/login">
-                <button type="button" class="btn btn-primary mt-4">Login</button>
-            </a>
-            <a href="/">
-                <button type="button" class="btn btn-danger mt-4">Voltar ao Menu</button>
-            </a>
-        </form>
+                        <button type="submit" class="btn btn-success mt-4">Criar</button>
+                        <a href="/usuarios/login">
+                            <button type="button" class="btn btn-primary mt-4">Login</button>
+                        </a>
+                        <a href="/">
+                            <button type="button" class="btn btn-danger mt-4">Voltar ao Menu</button>
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

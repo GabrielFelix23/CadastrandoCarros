@@ -10,8 +10,6 @@ const flash = require("connect-flash")
 const usuarios = require("./routes/usuarios")
 const passpost = require("passport")
 require("./confg/auth")
-const contatos = require("./routes/contato")
-
 
 //Configurações das Midllewares
     //Session
@@ -59,7 +57,6 @@ const contatos = require("./routes/contato")
     //Rotas
     app.use("/", router)
     app.use("/usuarios", usuarios)
-    app.use("/contatos", contatos)
     
 //servidor
 const porta = 8080

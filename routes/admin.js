@@ -42,8 +42,12 @@ router.get("/postagem/lista/:nome", (req, res) => {
         res.redirect("/")
     })
 })
+//entrar em contato
+router.get("/contato", (req, res) =>{
+    res.render("contatos/index")
+})
 
-//Botão Ver Carros
+//Após Login
 router.get("/carros", eAdmin, (req, res) => {
     Cadastro.find().lean().sort({data: 'desc'}).then((carros) => {
         res.render("admin/carros", {carros:carros})
