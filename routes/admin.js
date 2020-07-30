@@ -32,6 +32,7 @@ router.get("/", (req, res) => {
 router.get("/404", (req, res) => {
     res.send("Erro 404")
 })
+
 //Lista de postagem
 router.get("/postagem/lista/:nome", (req, res) => {
     Postagem.findOne({nome: req.params.nome}).lean().then((postagens) => {
