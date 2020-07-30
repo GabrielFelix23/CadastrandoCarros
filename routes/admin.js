@@ -43,7 +43,7 @@ router.get("/postagem/lista/:nome", (req, res) => {
     })
 })
 //entrar em contato
-router.get("/contato", (req, res) =>{
+router.get("/contato/email", (req, res) =>{
     res.render("contatos/index")
 })
 
