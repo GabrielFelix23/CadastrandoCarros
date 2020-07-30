@@ -36,14 +36,7 @@ router.get("/404", (req, res) => {
 //entrar em contato
 router.get("/contato/email/:id", (req, res) =>{
     Postagem.findOne({_id: req.params.id}).lean().then((postagem) => {
-        
-        Cadastro.findOne({nomeUser: req.body.nomeUser}).lean().then((cadastro) => {
-            res.render("contatos/index", {postagem:postagem, cadastro:cadastro})
-        }).catch((err) => {
-            req.flash("error_msg", "Houve um erros ao entrar em contato com o proprietário!")
-            res.redirect("/")
-        })
-
+        res.render("contatos/index", {postagem:postagem})
     }).catch((erro) => {
         req.flash("error_msg", "Houve um erros interno!")
         res.redirect("/")
