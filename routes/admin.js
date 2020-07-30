@@ -43,6 +43,16 @@ router.get("/contato/email/:id", (req, res) =>{
     })
 })
 
+//Localização do veiculo
+router.get("/localizacao/:id", (req, res) => {
+    Postagem.findOne({_id: req.params.id}).lean().then((postagem) => {
+        res.render("contatos/map", {postagem:postagem})
+    }).catch((erro) => {
+        req.flash("error_msg", "Houve um erros ao maperar a localização!")
+        res.redirect("/")
+    })
+})
+
 //Lista de postagem
 router.get("/postagem/lista/:nome", (req, res) => {
     Postagem.findOne({nome: req.params.nome}).lean().then((postagens) => {
