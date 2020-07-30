@@ -33,6 +33,23 @@ router.get("/404", (req, res) => {
     res.send("Erro 404")
 })
 
+//entrar em contato
+router.get("/contato/email/:id", (req, res) =>{
+    Postagem.findOne({_id: req.params.id}).lean().then((postagem) => {
+        
+        Cadastro.findOne({nomeUser: req.body.nomeUser}).lean().then((cadastro) => {
+            res.render("contatos/index", {postagem:postagem, cadastro:cadastro})
+        }).catch((err) => {
+            req.flash("error_msg", "Houve um erros ao entrar em contato com o proprietário!")
+            res.redirect("/")
+        })
+
+    }).catch((erro) => {
+        req.flash("error_msg", "Houve um erros interno!")
+        res.redirect("/")
+    })
+})
+
 //Lista de postagem
 router.get("/postagem/lista/:nome", (req, res) => {
     Postagem.findOne({nome: req.params.nome}).lean().then((postagens) => {
@@ -41,10 +58,6 @@ router.get("/postagem/lista/:nome", (req, res) => {
         req.flash("error_msg", "Houve um erros ao lista esta postagem!")
         res.redirect("/")
     })
-})
-//entrar em contato
-router.get("/contato/email", (req, res) =>{
-    res.render("contatos/index")
 })
 
 //Após Login

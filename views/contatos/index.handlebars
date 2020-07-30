@@ -4,11 +4,9 @@
 {{/each}}
 
 <div class="container mt-3">
-    <h2>Entre em contato:</h2>
+    <h3>{{postagem.titulo}}</h3>
     <hr>
 </div>
-
-<h3>{{postagens.nome}}</h3>
 
 <div class="container mt-5">
     <div class="d-flex justify-content-center">
@@ -17,11 +15,11 @@
                 <div class="card-body">
                     
                     <form action="" method="POST">
+                        <label for="nome">Carro:</label>
+                        <h5>{{postagem.nome}}</h5><br>
+
                         <label for="nomeCompleto">Seu nome completo:</label>
                         <input type="text" name="nomeCompleto" id="nomeCompleto" class="form-control">
-                        
-                        <label for="nome">Carro:</label>
-                        <input type="text" name="nome" id="nome" class="form-control">
 
                         <label for="assunto">Assunto: </label>
                         <textarea name="assunto" id="assunto" cols="50" rows="5" class="form-control"></textarea>
